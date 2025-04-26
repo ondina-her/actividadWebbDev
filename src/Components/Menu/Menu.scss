@@ -1,0 +1,19 @@
+$primary: #ffffff; 
+$nav-color: #040a22;    
+
+.Color-Letras
+{
+    color: $primary;
+}
+.bg-body-tertiary {
+    background-color: $nav-color !important; 
+    
+  }
+
+.navbar, .navbar-nav .nav-link, .navbar-brand, .nav-dropdown {
+    color: $primary !important;
+  
+    &:hover {
+      color: lighten($primary, 20%) !important;
+    }
+}
