@@ -1,33 +1,55 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
-export const todoSlice = createSlice({
-    name: 'todos',
+const todoSlice = createSlice({
+    name: "todos",
     initialState: {
-
-    value: [{
-        "name": "leer", 
-        "description":"leer 30 paginas",
-        "dueDate":"2025-11-01"
-    }]
-},
+        todos: [],
+    },
     reducers: {
         addTodo: (state, action) => {
-            console.log(action.payload);
-            state.value.push(action.payload)
+            console.log("agregar todo:", action.payload);
+            // state.todos.push(action.payload);
+            const { _id, ...todoWithoutId } = action.payload;
+
+            fetch('http://localhost:3000/tasks/addTask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": '123456'
+                },
+                body: JSON.stringify(action.payload)
+            }).catch((error) => {
+                console.error("Error al agregar el todo:", error);
+            });
         },
         initAddTodo: (state, action) => {
-            console.log(action.payload);
-            state.value.push(action.payload);
+            console.log("init agregar todo:", action.payload);
+            //state.todos = action.payload;
+            state.todos = [...action.payload];
+
+            
         },
         removeTodo: (state, action) => {
-            console.log(action.payload)
-            state.value = state.value.filter((todo) => todo.name !== action.payload);
+            console.log("eliminar todo:");
+            state.todos = state.todos.filter(task => task._id !== action.payload);
+            fetch('http://localhost:3000/tasks/removeTask/' + action.payload, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": '123456'
+                },
+            }).then(res => {
+  if (!res.ok) {
+    throw new Error("Respuesta no OK del servidor");
+  }
+}).catch((error) => {
+                console.error("Error al eliminar el todo:", error);
+            });
         },
     }
-
 })
 
-export const { addTodo, initAddTodo, removeTodo} = todoSlice.actions
-export const selectTodos = (state) => state.todos.value
+export const { addTodo, initAddTodo, removeTodo } = todoSlice.actions;
+export const selectTodos = (state) => state.todos.todos;
 
-export default todoSlice.reducer
+export default todoSlice.reducer;

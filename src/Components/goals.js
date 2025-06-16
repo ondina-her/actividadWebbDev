@@ -1,7 +1,7 @@
 import List from "./list";
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    addGoal,
+    addGoalAsync,
     selectGoals
 } from '../reducers/goalsSlice'
 import { useRef } from "react";
@@ -12,7 +12,7 @@ export function Goals(){
     const addItem = (e) => {
         e.preventDefault();
        // dispatch(addGoal({'name': inputRef.current.value}))
-       dispatch(addGoal({
+       dispatch(addGoalAsync({
         name: inputRef.current.value,
         description: inputRef.current.value,
         dueDate: inputRef.current.value

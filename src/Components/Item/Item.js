@@ -1,23 +1,40 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './Item.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeTodo,  addTodo } from '../../reducers/todoSlice';
+import { removeGoal, addGoalAsync } from '../../reducers/goalSlice';
 
 function Item(props) {
 
   const dispatch = useDispatch();
+  const option = useSelector((state) => state.options.value); // <- Saber si es task o goal
+
   const removeItem = (e) => {   
-    e.preventDefault();   
-    dispatch(removeTodo(props.name));
+    e.preventDefault();
+    
+    
+    if (option === 'tasks') {
+      dispatch(removeTodo(props.id));
+    } else if (option === 'goals') {
+      dispatch(removeGoal(props.id));
+    }
+
     console.log("removeItem");
   }
+
   
+  /*
   const addItem = (e) => {
     e.preventDefault();   
-    dispatch(addTodo({"name":props.name}));
+   if (option === 'tasks') {
+      dispatch(addItem(props.id));
+    } else if (option === 'goals') {
+      dispatch(addGoal(props.id));
+    }
+    
     console.log("addItem");
-  }
+  }*/
 
   return (
     <Card className='card-item'>

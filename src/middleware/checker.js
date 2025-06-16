@@ -8,7 +8,7 @@ const checker = (store) => (next) => (action) => {
   }
 
   if (
-    action.type === 'goals/addGoal' &&
+    action.type === 'goals/addGoalAsync' &&
     action.payload.name.toLowerCase().includes("bitcoin")
   ) {
     return alert("Nope. That's a bad idea.");
